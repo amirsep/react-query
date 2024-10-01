@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const PostsTraditional = () => {
@@ -7,7 +7,7 @@ const PostsTraditional = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const fetchPosts = async () => {
     try {
@@ -20,9 +20,9 @@ const PostsTraditional = () => {
     }
   };
 
-  // const handleClick = (postId) => {
-  //   navigate(`/posts/${postId}`);
-  // };
+  const handleClick = (postId) => {
+    navigate(`/posts/${postId}`);
+  };
 
   useEffect(() => {
     fetchPosts();
@@ -48,7 +48,7 @@ const PostsTraditional = () => {
     <div className="post-list bg-[#2f3136] rounded-lg p-5 w-full mx-auto">
       {posts.map((post) => (
         <div
-          // onClick={() => handleClick(post.id)}
+          onClick={() => handleClick(post.id)}
           key={post.id}
           className="post-item bg-[#40444b] rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#4f545c] cursor-pointer"
         >

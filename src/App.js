@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import PostsRQ from "./components/PostsRQ";
 import Home from "./components/Home";
-// import PostDetails from "./components/PostDetails";
+import PostDetails from "./components/PostDetails";
 import PostsTraditional from "./components/PostsTraditional";
 
 function App() {
@@ -33,7 +33,7 @@ function App() {
                 to="/rq-posts"
                 className="text-[#b9bbbe] text-lg font-medium hover:text-white transition-colors duration-200"
               >
-                RQ Posts
+                React Query Posts
               </Link>
             </li>
           </ul>
@@ -44,7 +44,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/posts" element={<PostsTraditional />} />
-            {/* <Route exact path="/posts/:postId" element={<PostDetails />} /> */}
+            <Route exact path="/posts/:postId" element={<PostDetails />} />
             <Route exact path="/rq-posts" element={<PostsRQ />} />
           </Routes>
         </div>
