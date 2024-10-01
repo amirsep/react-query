@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <div className="min-h-screen flex flex-col bg-[#36393f] text-[#dcddde]">
         {/* Navigation Bar */}
-        <nav className="bg-[#2f3136] py-4 px-6 border-b border-[#202225]">
+        <nav className="bg-[#2f3136] flex justify-center py-4 px-6 border-b border-[#202225]">
           <ul className="flex justify-start items-center space-x-8">
             <li>
               <Link
