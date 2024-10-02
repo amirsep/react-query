@@ -13,7 +13,6 @@ const PostsTraditional = () => {
     try {
       const response = await axios.get("http://localhost:4000/posts");
       setPosts(response?.data);
-      // console.log(response);
     } catch (error) {
       setIsError(error.message);
     } finally {
@@ -31,7 +30,7 @@ const PostsTraditional = () => {
 
   if (isLoading) {
     return (
-      <div className="text-green-600 font-bold text-xl text-center">
+      <div className="text-white font-bold text-xl text-center">
         Page is loading...
       </div>
     );

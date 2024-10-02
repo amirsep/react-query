@@ -15,7 +15,7 @@ const PostsRQ = () => {
 
   if (isLoading) {
     return (
-      <div className="text-green-600 font-bold text-xl text-center">
+      <div className="text-white font-bold text-xl text-center">
         Page is loading...
       </div>
     );
@@ -29,7 +29,15 @@ const PostsRQ = () => {
   }
   return (
     <div className="post-list bg-[#2f3136] rounded-lg p-5 w-full mx-auto">
-      <button onClick={refetch}>Fetch Posts</button>
+      <div className="flex justify-center my-4">
+        <button
+          className="px-6 py-3  text-white font-bold rounded-lg shadow-md bg-gray-600 hover:bg-gray-700 transition duration-300 ease-in-out transform hover:scale-105"
+          onClick={refetch}
+        >
+          Fetch Posts
+        </button>
+      </div>
+
       {data?.data?.map((post) => (
         <div
           key={post.id}
