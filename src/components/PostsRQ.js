@@ -2,12 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const PostsRQ = () => {
-  const { isLoading, isError, error, data } = useQuery({
+  const { isLoading, isError, error, data, isFetching, refetch } = useQuery({
     queryKey: ["posts"],
     queryFn: () => {
       return axios.get("http://localhost:4000/posts");
     },
+    // refetchInterval: 1000,
+    // refetchIntervalInBackground: true,
+    enabled: false,
   });
+  console.log(isLoading, isFetching);
+
   if (isLoading) {
     return (
       <div className="text-green-600 font-bold text-xl text-center">
@@ -17,13 +22,14 @@ const PostsRQ = () => {
   }
   if (isError) {
     return (
-      <div className="text-red-600 font-bold text-xl text-center">
+      <div className="text-red-600 font-bold text-xl text-center ">
         {error.message}
       </div>
     );
   }
   return (
     <div className="post-list bg-[#2f3136] rounded-lg p-5 w-full mx-auto">
+      <button onClick={refetch}>Fetch Posts</button>
       {data?.data?.map((post) => (
         <div
           key={post.id}

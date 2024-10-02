@@ -8,7 +8,6 @@ const PostDetails = () => {
   const fetchPostDetails = (postId) => {
     return axios.get(`http://localhost:4000/posts/${postId}`);
   };
-
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["posts", postId],
     queryFn: () => fetchPostDetails(postId),
