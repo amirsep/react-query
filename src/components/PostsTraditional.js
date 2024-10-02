@@ -5,7 +5,7 @@ import axios from "axios";
 const PostsTraditional = () => {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -13,8 +13,9 @@ const PostsTraditional = () => {
     try {
       const response = await axios.get("http://localhost:4000/posts");
       setPosts(response?.data);
+      // console.log(response);
     } catch (error) {
-      setIsError(true);
+      setIsError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -39,7 +40,7 @@ const PostsTraditional = () => {
   if (isError) {
     return (
       <div className="text-red-600 font-bold text-xl text-center">
-        Error has occurred...
+        Error: {isError}
       </div>
     );
   }
