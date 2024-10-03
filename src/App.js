@@ -2,8 +2,8 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import PostsRQ from "./components/PostsRQ";
 import Home from "./components/Home";
-import PostDetails from "./components/PostDetails";
 import PostsTraditional from "./components/PostsTraditional";
+import PostDetailsRQ from "./components/PostDetailsRQ";
 
 function App() {
   return (
@@ -44,7 +44,8 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/posts" element={<PostsTraditional />} />
-            <Route exact path="/posts/:postId" element={<PostDetails />} />
+            <Route exact path="/posts/:postId" element={<PostDetailsRQ />} />
+            <Route exact path="/rq-posts/:postId" element={<PostDetailsRQ />} />
             <Route exact path="/rq-posts" element={<PostsRQ />} />
           </Routes>
         </div>

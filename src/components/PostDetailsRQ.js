@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
-const PostDetails = () => {
+const PostDetailsRQ = () => {
   let { postId } = useParams();
 
   const fetchPostDetails = (postId) => {
@@ -51,4 +51,4 @@ const PostDetails = () => {
   );
 };
 
-export default PostDetails;
+export default PostDetailsRQ;

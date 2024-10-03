@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const PostsRQ = () => {
   const { isLoading, isError, error, data, isFetching, refetch } = useQuery({
@@ -39,15 +40,17 @@ const PostsRQ = () => {
       </div>
 
       {data?.data?.map((post) => (
-        <div
-          key={post.id}
-          className="post-item bg-[#40444b] rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#4f545c] cursor-pointer"
-        >
-          <h3 className="post-title text-lg font-bold text-white m-0">
-            {post.title}
-          </h3>
-          <p className="post-body text-sm text-[#b9bbbe] mt-2">{post.body}</p>
-        </div>
+        <Link to={`/rq-posts/${post.id}`}>
+          <div
+            key={post.id}
+            className="post-item bg-[#40444b] rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#4f545c] cursor-pointer"
+          >
+            <h3 className="post-title text-lg font-bold text-white m-0">
+              {post.title}
+            </h3>
+            <p className="post-body text-sm text-[#b9bbbe] mt-2">{post.body}</p>
+          </div>
+        </Link>
       ))}
     </div>
   );
