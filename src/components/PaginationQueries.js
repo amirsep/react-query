@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const fetchFruits = (pageId) => {
   return axios.get(`http://localhost:4000/fruits?_limit=4&_page=${pageId}`);

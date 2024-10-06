@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import PostsTraditional from "./components/PostsTraditional";
 import PostDetailsRQ from "./components/PostDetailsRQ";
 import PaginationQueries from "./components/PaginationQueries";
+import InfiniteQueries from "./components/InfiniteQueries";
 
 function App() {
   return (
@@ -37,6 +38,22 @@ function App() {
                 React Query Posts
               </Link>
             </li>
+            <li>
+              <Link
+                to="/paginated-fruits"
+                className="text-[#b9bbbe] text-lg font-medium hover:text-white transition-colors duration-200"
+              >
+                Pagination Queries
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/infinite-fruits"
+                className="text-[#b9bbbe] text-lg font-medium hover:text-white transition-colors duration-200"
+              >
+                Infinite Queries
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -51,6 +68,11 @@ function App() {
               exact
               path="/paginated-fruits"
               element={<PaginationQueries />}
+            />
+            <Route
+              exact
+              path="/infinite-fruits"
+              element={<InfiniteQueries />}
             />
             <Route exact path="/rq-posts" element={<PostsRQ />} />
           </Routes>
