@@ -4,6 +4,7 @@ import PostsRQ from "./components/PostsRQ";
 import Home from "./components/Home";
 import PostsTraditional from "./components/PostsTraditional";
 import PostDetailsRQ from "./components/PostDetailsRQ";
+import PaginationQueries from "./components/PaginationQueries";
 
 function App() {
   return (
@@ -46,6 +47,11 @@ function App() {
             <Route exact path="/posts" element={<PostsTraditional />} />
             <Route exact path="/posts/:postId" element={<PostDetailsRQ />} />
             <Route exact path="/rq-posts/:postId" element={<PostDetailsRQ />} />
+            <Route
+              exact
+              path="/paginated-fruits"
+              element={<PaginationQueries />}
+            />
             <Route exact path="/rq-posts" element={<PostsRQ />} />
           </Routes>
         </div>
