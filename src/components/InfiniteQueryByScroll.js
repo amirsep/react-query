@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 const fetchFruits = ({ pageParam = 1, queryKey }) => {
   const limit = queryKey[1]; // Accessing dynamic limit from queryKey
@@ -9,22 +10,37 @@ const fetchFruits = ({ pageParam = 1, queryKey }) => {
   );
 };
 
-const InfiniteQueries = () => {
+const InfiniteQueryByScroll = () => {
   const [limit, setLimit] = useState(10); // State for dynamic limit
 
-  const { data, isLoading, isError, error, fetchNextPage, hasNextPage } =
-    useInfiniteQuery({
-      queryKey: ["fruits", limit], // Pass limit as part of the queryKey
-      queryFn: fetchFruits,
-      initialPageParam: 1,
-      getNextPageParam: (_lastPage, allPages) => {
-        if (allPages.length < 15) {
-          return allPages.length + 1;
-        } else {
-          return undefined;
-        }
-      },
-    });
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["fruits", limit], // Pass limit as part of the queryKey
+    queryFn: fetchFruits,
+    initialPageParam: 1,
+    getNextPageParam: (_lastPage, allPages) => {
+      if (allPages.length < 15) {
+        return allPages.length + 1;
+      } else {
+        return undefined;
+      }
+    },
+  });
+
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView]);
 
   if (isLoading) {
     return (
@@ -66,17 +82,6 @@ const InfiniteQueries = () => {
 
   return (
     <div className="post-list bg-[#2f3136] rounded-lg p-5 w-full mx-auto">
-      <div className="mb-4">
-        <label className="text-white font-bold mr-2">Items per page:</label>
-        <input
-          type="number"
-          value={limit}
-          onChange={(e) => setLimit(Number(e.target.value))}
-          className="px-3 py-2 rounded-md bg-[#40444b] text-white"
-          min="1"
-        />
-      </div>
-
       {data.pages.map((page) => {
         return page?.data.map((fruit) => {
           return (
@@ -94,22 +99,40 @@ const InfiniteQueries = () => {
           );
         });
       })}
-      <div className="flex justify-center ">
-        <button
-          onClick={fetchNextPage}
-          disabled={!hasNextPage}
-          className={`px-6 py-3  text-white font-bold rounded-lg shadow-md
-          ${
-            !hasNextPage
-              ? "bg-gray-600 cursor-not-allowed"
-              : "bg-gray-600 hover:bg-gray-700 transition duration-300 ease-in-out transform hover:scale-105"
-          }`}
-        >
-          Load More..
-        </button>
+      <div
+        ref={ref}
+        className="flex items-center justify-center mt-6 py-4 bg-gray-800 text-white text-lg font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+      >
+        {isFetchingNextPage && (
+          <>
+            <svg
+              className="animate-spin h-5 w-5 mr-3 text-blue-500"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"
+              ></path>
+            </svg>
+            Loading...
+          </>
+        )}
       </div>
+
+      {/* <div ref={ref}> {isFetchingNextPage && "Loading..."}</div> */}
     </div>
   );
 };
 
-export default InfiniteQueries;
+export default InfiniteQueryByScroll;

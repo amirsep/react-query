@@ -6,6 +6,7 @@ import PostsTraditional from "./components/PostsTraditional";
 import PostDetailsRQ from "./components/PostDetailsRQ";
 import PaginationQueries from "./components/PaginationQueries";
 import InfiniteQueries from "./components/InfiniteQueries";
+import InfiniteQueryByScroll from "./components/InfiniteQueryByScroll";
 
 function App() {
   return (
@@ -54,6 +55,14 @@ function App() {
                 Infinite Queries
               </Link>
             </li>
+            <li>
+              <Link
+                to="/infinite-fruits-scroll"
+                className="text-[#b9bbbe] text-lg font-medium hover:text-white transition-colors duration-200"
+              >
+                Infinite Query By Scroll
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -63,6 +72,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route exact path="/posts" element={<PostsTraditional />} />
             <Route exact path="/posts/:postId" element={<PostDetailsRQ />} />
+            <Route exact path="/rq-posts" element={<PostsRQ />} />
             <Route exact path="/rq-posts/:postId" element={<PostDetailsRQ />} />
             <Route
               exact
@@ -74,7 +84,11 @@ function App() {
               path="/infinite-fruits"
               element={<InfiniteQueries />}
             />
-            <Route exact path="/rq-posts" element={<PostsRQ />} />
+            <Route
+              exact
+              path="/infinite-fruits-scroll"
+              element={<InfiniteQueryByScroll />}
+            />
           </Routes>
         </div>
 
