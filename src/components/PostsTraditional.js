@@ -72,7 +72,7 @@ const PostsTraditional = () => {
         <div
           onClick={() => handleClick(post.id)}
           key={post.id}
-          className="post-item bg-[#40444b] rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#4f545c] cursor-pointer"
+          className="post-item bg-[#282a36] rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#3b3e4a] cursor-pointer"
         >
           <h3 className="post-title text-lg font-bold text-white m-0">
             {post.title}

@@ -57,7 +57,7 @@ const PaginationQueries = () => {
       {data?.data.map((item) => (
         <div
           key={item.id}
-          className="post-item bg-[#40444b] rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#4f545c] cursor-pointer"
+          className=" bg-[#282a36]  rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#3b3e4a] cursor-pointer"
         >
           <h3 className="post-title text-lg font-bold text-white m-0">
             {item.name}
