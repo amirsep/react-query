@@ -53,7 +53,7 @@ const PaginationQueries = () => {
   }
 
   return (
-    <div className="post-list bg-[#2f3136] rounded-lg p-5 w-full mx-auto">
+    <div className="post-list rounded-lg p-5 w-full mx-auto">
       {data?.data.map((item) => (
         <div
           key={item.id}
@@ -62,7 +62,7 @@ const PaginationQueries = () => {
           <h3 className="post-title text-lg font-bold text-white m-0">
             {item.name}
           </h3>
-          <p className="post-body text-sm text-[#b9bbbe] mt-2">ID: {item.id}</p>
+          <p className="post-body text-sm text-[#b9bbbe] ">ID: {item.id}</p>
         </div>
       ))}
 

@@ -72,7 +72,7 @@ const InfiniteQueries = () => {
   }
 
   return (
-    <div className="post-list bg-[#2f3136] rounded-lg p-5 w-full mx-auto">
+    <div className="post-list rounded-lg p-5 w-full mx-auto">
       <div className="mb-4">
         <label className="text-white font-bold mr-2">Items per page:</label>
         <input
@@ -94,9 +94,7 @@ const InfiniteQueries = () => {
               <h3 className="post-title text-lg font-bold text-white m-0">
                 {fruit.name}
               </h3>
-              <p className="post-body text-sm text-[#b9bbbe] mt-2">
-                ID: {fruit.id}
-              </p>
+              <p className="post-body text-sm text-[#b9bbbe]">ID: {fruit.id}</p>
             </div>
           );
         });

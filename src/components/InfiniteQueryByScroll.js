@@ -81,7 +81,7 @@ const InfiniteQueryByScroll = () => {
   }
 
   return (
-    <div className="post-list bg-[#2f3136] rounded-lg p-5 w-full mx-auto">
+    <div className="post-list  rounded-lg p-5 w-full mx-auto">
       {data.pages.map((page) => {
         return page?.data.map((fruit) => {
           return (
@@ -92,7 +92,7 @@ const InfiniteQueryByScroll = () => {
               <h3 className="post-title text-lg font-bold text-white m-0">
                 {fruit.name}
               </h3>
-              <p className="post-body text-sm text-[#b9bbbe] mt-2">
+              <p className="post-body text-sm text-[#b9bbbe] ">
                 ID: {fruit.id}
               </p>
             </div>

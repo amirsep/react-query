@@ -52,10 +52,10 @@ const PostsRQ = () => {
     );
   }
   return (
-    <div className="post-list bg-[#2f3136] rounded-lg p-5 w-full mx-auto">
-      <div className="flex justify-center my-4">
+    <div className="rounded-lg  w-full mx-auto">
+      <div className="flex justify-center my-2">
         <button
-          className="px-6 py-3  text-white font-bold rounded-lg shadow-md bg-gray-600 hover:bg-gray-700 transition duration-300 ease-in-out transform hover:scale-105"
+          className="px-6 py-2  text-white font-bold rounded-lg shadow-md bg-gray-600 hover:bg-gray-700 transition duration-300 ease-in-out transform hover:scale-105"
           onClick={refetch}
         >
           Fetch Posts
@@ -68,10 +68,10 @@ const PostsRQ = () => {
             key={post.id}
             className="post-item bg-[#40444b] rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#4f545c] cursor-pointer"
           >
-            <h3 className="post-title text-lg font-bold text-white m-0">
+            <h3 className="post-title text-lg font-bold text-white">
               {post.title}
             </h3>
-            <p className="post-body text-sm text-[#b9bbbe] mt-2">{post.body}</p>
+            <p className="post-body text-sm text-[#b9bbbe] ">{post.body}</p>
           </div>
         </Link>
       ))}

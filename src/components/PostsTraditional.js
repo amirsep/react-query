@@ -67,7 +67,7 @@ const PostsTraditional = () => {
   }
 
   return (
-    <div className="post-list bg-[#2f3136] rounded-lg p-5 w-full mx-auto">
+    <div className="post-list rounded-lg p-5 w-full mx-auto">
       {posts.map((post) => (
         <div
           onClick={() => handleClick(post.id)}
@@ -77,7 +77,7 @@ const PostsTraditional = () => {
           <h3 className="post-title text-lg font-bold text-white m-0">
             {post.title}
           </h3>
-          <p className="post-body text-sm text-[#b9bbbe] mt-2">{post.body}</p>
+          <p className="post-body text-sm text-[#b9bbbe] ">{post.body}</p>
         </div>
       ))}
     </div>
