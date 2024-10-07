@@ -1,14 +1,21 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
+import React, { useState } from "react";
 
-const fetchFruits = ({ pageParam }) => {
-  return axios.get(`http://localhost:4000/fruits?_limit=4&_page=${pageParam}`);
+// Function to fetch fruits with dynamic page limit
+const fetchFruits = ({ pageParam = 1, queryKey }) => {
+  const limit = queryKey[1]; // Accessing dynamic limit from queryKey
+  return axios.get(
+    `http://localhost:4000/fruits?_limit=${limit}&_page=${pageParam}`
+  );
 };
 
 const InfiniteQueries = () => {
+  const [limit, setLimit] = useState(4); // State for dynamic limit
+
   const { data, isLoading, isError, error, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
-      queryKey: ["fruits"],
+      queryKey: ["fruits", limit], // Pass limit as part of the queryKey
       queryFn: fetchFruits,
       initialPageParam: 1,
       getNextPageParam: (_lastPage, allPages) => {
@@ -37,6 +44,17 @@ const InfiniteQueries = () => {
 
   return (
     <div className="post-list bg-[#2f3136] rounded-lg p-5 w-full mx-auto">
+      <div className="mb-4">
+        <label className="text-white font-bold mr-2">Items per page:</label>
+        <input
+          type="number"
+          value={limit}
+          onChange={(e) => setLimit(Number(e.target.value))}
+          className="px-3 py-2 rounded-md bg-[#40444b] text-white"
+          min="1"
+        />
+      </div>
+
       {data.pages.map((page) => {
         return page?.data.map((fruit) => {
           return (
