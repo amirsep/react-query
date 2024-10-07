@@ -1,6 +1,6 @@
 const Home = () => {
   return (
-    <div className="home-container bg-[#2f3136] rounded-lg p-5 w-full max-w-xl mx-auto text-center">
+    <div className="home-container  rounded-lg p-5 w-full max-w-xl mx-auto text-center">
       <h1 className="home-title text-3xl font-bold text-white mb-4">
         Welcome to the Home Page
       </h1>

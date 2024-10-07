@@ -10,7 +10,7 @@ const fetchFruits = ({ pageParam = 1, queryKey }) => {
 };
 
 const InfiniteQueries = () => {
-  const [limit, setLimit] = useState(10); // State for dynamic limit
+  const [limit, setLimit] = useState(6); // State for dynamic limit
 
   const {
     data,
@@ -25,7 +25,7 @@ const InfiniteQueries = () => {
     queryFn: fetchFruits,
     initialPageParam: 1,
     getNextPageParam: (_lastPage, allPages) => {
-      if (allPages.length < 15) {
+      if (allPages.length < 10) {
         return allPages.length + 1;
       } else {
         return undefined;
@@ -72,7 +72,7 @@ const InfiniteQueries = () => {
   }
 
   return (
-    <div className="post-list rounded-lg p-5 w-full mx-auto">
+    <div className="post-list rounded-lg  w-full mx-auto">
       <div className="mb-4">
         <label className="text-white font-bold mr-2">Items per page:</label>
         <input
