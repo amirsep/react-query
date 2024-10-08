@@ -17,7 +17,7 @@ const PostsRQ = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  const { isLoading, isError, error, data, isFetching, refetch } = useQuery({
+  const { isLoading, isError, error, data, refetch } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
     enabled: false,
