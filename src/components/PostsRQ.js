@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -17,16 +17,19 @@ const PostsRQ = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  const { isLoading, isError, error, data, refetch } = useQuery({
+  const queryClient = useQueryClient();
+
+  const { isLoading, isError, error, data, refetch, isFetching } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
     enabled: false,
-    // refetchInterval: 1000,
-    // refetchIntervalInBackground: true,
   });
 
-  const { mutate } = useMutation({
+  const { mutate, isLoading: isPosting } = useMutation({
     mutationFn: addPost,
+    onSuccess: () => {
+      queryClient.invalidateQueries("posts");
+    },
   });
 
   const handleSubmit = (e) => {
@@ -37,7 +40,7 @@ const PostsRQ = () => {
     setBody("");
   };
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-white font-bold text-xl flex items-center space-x-3">
@@ -74,14 +77,15 @@ const PostsRQ = () => {
       </div>
     );
   }
+
   return (
     <div className="rounded-lg  w-full mx-auto">
       <form
         onSubmit={handleSubmit}
-        className="bg-[#282a36] p-6 rounded-lg shadow-md max-w-lg mx-auto"
+        className="p-2 rounded-lg shadow-md max-w-lg mx-auto"
       >
         <div className="mb-4">
-          <label className="block text-white font-medium mb-2">Title</label>
+          <label className="block  text-white font-medium mb-2">Title</label>
           <input
             type="text"
             onChange={(e) => setTitle(e.target.value)}
@@ -97,35 +101,38 @@ const PostsRQ = () => {
             onChange={(e) => setBody(e.target.value)}
             placeholder="Enter post body"
             value={body}
-            rows="4"
+            rows="2"
             className="w-full px-4 py-2 border border-transparent rounded-lg bg-[#40444b] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:bg-gray-700"
           />
         </div>
         <div className="flex justify-center">
           <button
             type="submit"
-            className=" px-6 py-2 text-white font-bold rounded-lg shadow-md bg-gray-600 hover:bg-gray-700 transition duration-300 ease-in-out transform hover:scale-105"
+            className={`px-6 py-2 text-white font-bold rounded-lg shadow-md bg-gray-600 hover:bg-gray-700 transition duration-300 ease-in-out transform hover:scale-105 ${
+              isPosting && "opacity-50 cursor-not-allowed"
+            }`}
+            disabled={isPosting}
           >
-            Add Post
+            {isPosting ? "Posting..." : "Add Post"}
           </button>
         </div>
       </form>
 
       <div className="flex justify-center my-2">
         <button
-          className="px-6 py-2  text-white font-bold rounded-lg shadow-md bg-gray-600 hover:bg-gray-700 transition duration-300 ease-in-out transform hover:scale-105"
+          className={`px-6 py-2  text-white font-bold rounded-lg shadow-md bg-gray-600 hover:bg-gray-700 transition duration-300 ease-in-out transform hover:scale-105 ${
+            isFetching && "opacity-50 cursor-not-allowed"
+          }`}
           onClick={refetch}
+          disabled={isFetching}
         >
-          Fetch Posts
+          {isFetching ? "Fetching..." : "Fetch Posts"}
         </button>
       </div>
 
       {data?.data?.map((post) => (
-        <Link to={`/rq-posts/${post.id}`}>
-          <div
-            key={post.id}
-            className="bg-[#282a36] mt-4 rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#3b3e4a] cursor-pointer"
-          >
+        <Link to={`/rq-posts/${post.id}`} key={post.id}>
+          <div className="bg-[#282a36] mt-4 rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#3b3e4a] cursor-pointer">
             <h3 className="post-title text-lg font-bold text-white">
               {post.title}
             </h3>
