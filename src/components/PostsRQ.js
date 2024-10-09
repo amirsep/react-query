@@ -13,36 +13,103 @@ const addPost = (post) => {
   return axios.post("http://localhost:4000/posts", post);
 };
 
+// DELETE Method
+const deletePost = (postId) => {
+  return axios.delete(`http://localhost:4000/posts/${postId}`);
+};
+
+// PUT (Update) Method
+const updatePost = (updatedPost) => {
+  return axios.put(
+    `http://localhost:4000/posts/${updatedPost.id}`,
+    updatedPost
+  );
+};
+
 const PostsRQ = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [editMode, setEditMode] = useState(false);
+  const [currentPostId, setCurrentPostId] = useState(null);
 
   const queryClient = useQueryClient();
 
+  // Fetch Posts
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
-    // enabled: false,
   });
 
-  const { mutate, isLoading: isPosting } = useMutation({
+  // Add Post
+  const { mutate: addPostMutation, isLoading: isPosting } = useMutation({
     mutationFn: addPost,
-    onSuccess: (newData) => {
+    onMutate: async (newPost) => {
+      await queryClient.cancelQueries(["posts"]);
+      const previousPostData = queryClient.getQueryData(["posts"]);
+
       queryClient.setQueryData(["posts"], (oldQueryData) => {
         return {
           ...oldQueryData,
-          data: [...oldQueryData.data, newData.data],
+          data: [
+            ...oldQueryData.data,
+            { ...newPost, id: String(oldQueryData?.data?.length + 1) },
+          ],
         };
       });
+      return { previousPostData };
+    },
+    onError: (_error, _post, context) => {
+      queryClient.setQueryData(["posts"], context.previousPostData);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["posts"]);
     },
   });
 
+  // Delete Post
+  const { mutate: deletePostMutation } = useMutation({
+    mutationFn: deletePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["posts"]);
+    },
+  });
+
+  // Update Post
+  const { mutate: updatePostMutation, isLoading: isUpdating } = useMutation({
+    mutationFn: updatePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["posts"]);
+    },
+  });
+
+  // Handle Post Submit (Add or Update)
   const handleSubmit = (e) => {
     e.preventDefault();
     const post = { title, body };
-    mutate(post);
+
+    if (editMode) {
+      updatePostMutation({ ...post, id: currentPostId });
+      setEditMode(false);
+      setCurrentPostId(null);
+    } else {
+      addPostMutation(post);
+    }
+
     setTitle("");
     setBody("");
+  };
+
+  // Handle Post Edit
+  const handleEdit = (post) => {
+    setTitle(post.title);
+    setBody(post.body);
+    setEditMode(true);
+    setCurrentPostId(post.id);
+  };
+
+  // Handle Post Delete
+  const handleDelete = (postId) => {
+    deletePostMutation(postId);
   };
 
   if (isLoading || isFetching) {
@@ -114,11 +181,17 @@ const PostsRQ = () => {
           <button
             type="submit"
             className={`px-6 py-2 text-white font-bold rounded-lg shadow-md bg-gray-600 hover:bg-gray-700 transition duration-300 ease-in-out transform hover:scale-105 ${
-              isPosting && "opacity-50 cursor-not-allowed"
+              isPosting || isUpdating ? "opacity-50 cursor-not-allowed" : ""
             }`}
-            disabled={isPosting}
+            disabled={isPosting || isUpdating}
           >
-            {isPosting ? "Posting..." : "Add Post"}
+            {isPosting || isUpdating
+              ? editMode
+                ? "Updating..."
+                : "Posting..."
+              : editMode
+              ? "Update Post"
+              : "Add Post"}
           </button>
         </div>
       </form>
@@ -136,14 +209,29 @@ const PostsRQ = () => {
       </div>
 
       {data?.data?.map((post) => (
-        <Link to={`/rq-posts/${post.id}`} key={post.id}>
-          <div className="bg-[#282a36] mt-4 rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#3b3e4a] cursor-pointer">
-            <h3 className="post-title text-lg font-bold text-white">
-              {post.title}
-            </h3>
-            <p className="post-body text-sm text-[#b9bbbe] ">{post.body}</p>
+        <div
+          key={post.id}
+          className="bg-[#282a36] mt-4 rounded-lg p-4 mb-2 transition-colors duration-300 hover:bg-[#3b3e4a]"
+        >
+          <h3 className="post-title text-lg font-bold text-white">
+            {post.title}
+          </h3>
+          <p className="post-body text-sm text-[#b9bbbe] ">{post.body}</p>
+          <div className="flex justify-end space-x-4 mt-2">
+            <button
+              onClick={() => handleEdit(post)}
+              className="text-blue-400 font-bold hover:underline"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => handleDelete(post.id)}
+              className="text-red-500 font-bold hover:underline"
+            >
+              Delete
+            </button>
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );
