@@ -22,13 +22,18 @@ const PostsRQ = () => {
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
-    enabled: false,
+    // enabled: false,
   });
 
   const { mutate, isLoading: isPosting } = useMutation({
     mutationFn: addPost,
-    onSuccess: () => {
-      queryClient.invalidateQueries("posts");
+    onSuccess: (newData) => {
+      queryClient.setQueryData(["posts"], (oldQueryData) => {
+        return {
+          ...oldQueryData,
+          data: [...oldQueryData.data, newData.data],
+        };
+      });
     },
   });
 
